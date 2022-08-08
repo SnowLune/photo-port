@@ -1,22 +1,33 @@
 import React from "react";
 import { render, cleanup, getAllByLabelText } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import Nav from "../"
+import Nav from "../";
+
+const categories = [
+   { name: "portraits", description: "Portraits of people in my life" },
+];
+const mockCurrentCategory = jest.fn();
+const mockSetCurrentCategory = jest.fn();
 
 afterEach(cleanup);
 
 describe("Nav component", () => {
    // baseline test
    it("renders", () => {
-      render(<Nav />);
+      render(
+         <Nav
+            categories={categories}
+            setCurrentCategory={mockSetCurrentCategory}
+            currentCategory={mockCurrentCategory}
+         />
+      );
    });
 
    // snapshot test
    it("matches snapshot", () => {
       const { asFragment } = render(<Nav />);
       expect(asFragment()).toMatchSnapshot();
-   })
-
+   });
 });
 
 describe("emoji is visible", () => {
@@ -26,7 +37,7 @@ describe("emoji is visible", () => {
       // Assert
       expect(getByLabelText("camera")).toHaveTextContent("📸");
    });
-})
+});
 
 describe("links are visible", () => {
    it("inserts text into the links", () => {
@@ -37,4 +48,4 @@ describe("links are visible", () => {
       expect(getByTestId("link")).toHaveTextContent("Oh Snap!");
       expect(getByTestId("about")).toHaveTextContent("About Me");
    });
-})
+});
